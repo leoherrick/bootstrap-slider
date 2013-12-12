@@ -27,6 +27,7 @@
 	};
 
 	var Slider = function(element, options) {
+		var that = this;
 		var el = this.element = $(element).hide();
 		var origWidth = el.outerWidth();
 
@@ -85,10 +86,10 @@
 				break;
 		}
 
-		['min', 'max', 'step', 'value'].forEach(function(attr) {
+		$.each(['min', 'max', 'step', 'value'], function(attr) {
             // the "|| 0" is used when the expression before it evaluates to an empty string (causes bad calculations in IE later on)
-			this[attr] = el.data('slider-' + attr) || options[attr] || el.prop(attr) || 0;
-		}, this);
+			that[attr] = el.data('slider-' + attr) || options[attr] || el.prop(attr) || 0;
+		});
 
 		if (this.value instanceof Array) {
 			this.range = true;
@@ -435,7 +436,7 @@
 			if(typeof val === 'number') {
 				return val;
 			} else if(val instanceof Array) {
-				val.forEach(function(input) { if (typeof input !== 'number') { throw new Error( ErrorMsgs.formatInvalidInputErrorMsg(input) ); }});
+				$.each(val, function(input) { if (typeof input !== 'number') { throw new Error( ErrorMsgs.formatInvalidInputErrorMsg(input) ); }});
 				return val;
 			} else {
 				throw new Error( ErrorMsgs.formatInvalidInputErrorMsg(val) );
